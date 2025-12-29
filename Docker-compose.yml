@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  frontend:
+    build: ./frontend
+    container_name: frontend_app
+    ports:
+      - "8081:80"
+    depends_on:
+      - backend
+    networks:
+      - app_net
+
+  backend:
+    build: ./backend
+    container_name: backend_app
+    environment:
+      MYSQL_USERNAME: appuser
+      MYSQL_PASSWORD: app123
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mydb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: appuser
+      SPRING_DATASOURCE_PASSWORD: app123
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - app_net
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    command: --port=3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: app123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app_net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot123"]
+      interval: 20s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+volumes:
+  mysql_data:
+
+networks:
+  app_net:
