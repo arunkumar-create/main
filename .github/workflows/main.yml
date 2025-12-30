@@ -36,8 +36,8 @@ jobs:
           file: ./frontend/Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}arunkumar885825/frontend:latest
-            ${{ secrets.DOCKER_USERNAME }}arunkumar885825/frontend:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+            ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
