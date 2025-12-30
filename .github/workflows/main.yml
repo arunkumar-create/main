@@ -68,7 +68,8 @@ jobs:
           script: |
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             cd /home/ec2-user/main
-            docker-compose pull backend frontend
+            docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.sha }}
+            docker pull ${{ secrets.DOCKER_USERNAME }}/backend:${{ github.sha }}
             docker pull mysql:8.0
             docker-compose up -d --force-recreate mysql
             docker-compose up -d --remove-orphans backend frontend
