@@ -91,7 +91,7 @@ const Login = (props) => {
       </div>
 
       <div className="containere">
-        <h2>Loginv2</h2>
+        <h2>Loginv1</h2>
         <form onSubmit={handleSubmit}>
           <div>
             <label>Email</label>
