@@ -72,6 +72,5 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/backend:${{ github.sha }}
             docker pull mysql:8.0
             docker-compose up -d --force-recreate mysql
-            docker-compose up -d --remove-orphans \
-            frontend=$DOCKER_USERNAME/frontend:${GITHUB_SHA} \
-            backend=$DOCKER_USERNAME/backend:${GITHUB_SHA}
+            docker-compose up -d --remove-orphans 
+          
