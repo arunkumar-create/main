@@ -3,7 +3,7 @@ name: CI - Build and Push Containers
 on:
   push:
     branches: ["main"]
-  
+
 permissions:
   contents: read
 
@@ -54,3 +54,21 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Amazon Linux EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            cd /home/ec2-user/app
+            docker-compose pull backend frontend
+            docker pull mysql:8.0
+            docker-compose up -d --force-recreate mysql
+            docker-compose up -d --remove-orphans backend frontend
