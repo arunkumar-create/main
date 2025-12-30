@@ -229,7 +229,7 @@ const Register = ({ onSelectChange },props) => {
         alert('Please check the errors before submitting the form');
       }
     } else {
-      alert('All fields are required');
+      alert('All fields are required1');
     }
   };
   
