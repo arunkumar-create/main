@@ -1,4 +1,4 @@
-name: CI - Build and Push Containers
+name: CI - Build and Deploy Containers
 
 on:
   push:
@@ -28,8 +28,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Build frontend
-      - name: Build frontend image
+      - name: Build & push frontend image
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
@@ -41,8 +40,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # Build backend
-      - name: Build backend image
+      - name: Build & push backend image
         uses: docker/build-push-action@v5
         with:
           context: ./backend
@@ -66,11 +64,20 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            set -e
+
+            echo "🔐 Logging into Docker Hub"
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+            echo "📁 Moving to app directory"
             cd /home/ec2-user/main
-            export IMAGE_TAG=${GITHUB_SHA}
-            docker-compose pull 
-            docker pull mysql:8.0
-            docker-compose up -d --force-recreate mysql
-            docker-compose up -d --remove-orphans backend frontend
-          
+
+            echo "🏷️ Setting image tag from GitHub SHA"
+            export IMAGE_TAG=${{ github.sha }}
+            echo "IMAGE_TAG=$IMAGE_TAG"
+
+            echo "📥 Pulling images from Docker Hub"
+            docker-compose pull
+
+            echo "🚀 Recreating containers with new images"
+            docker-compose up -d --force-recreate --remove-orphans
