@@ -142,7 +142,7 @@ const EditForm = () => {
     }
 
     try {
-      const response = await axios.put(`http://localhost:8080/userdetails/update/${formData.email}`, formData);
+      const response = await axios.put(`http://40.192.119.118:8080/userdetails/update/${formData.email}`, formData);
       if (response.status === 200) {
         alert('Details updated successfully');
         localStorage.setItem('user', JSON.stringify(response.data));
