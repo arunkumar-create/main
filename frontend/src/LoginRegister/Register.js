@@ -77,7 +77,7 @@ const Register = ({ onSelectChange },props) => {
     try {
       const response = await axios.get(`http://40.192.119.118:8080/userdetails/check-email/${email}`);
       if (response.data) {
-        alert('Email is already registered1');
+        alert('Email is already registered');
         setEmailCheckStatus('Email is already registered');
         return false; // Email is already registered
       } else {
