@@ -61,7 +61,7 @@ const Login = (props) => {
     if (email && password) {
       if (!errors.email && !errors.password) {
         try {
-          const response = await axios.post('http://localhost:8080/userdetails/login', { email, password });
+          const response = await axios.post('http://16.112.123.127:8080/userdetails/login', { email, password });
 
           if (response.status === 200) {
             localStorage.setItem('user', JSON.stringify(response.data));
