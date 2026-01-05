@@ -140,9 +140,9 @@ const EditForm = () => {
       alert('Please fix the errors in the form before submitting.');
       return;
     }
-
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     try {
-      const response = await axios.put(`http://16.112.123.127:8080/userdetails/update/${formData.email}`, formData);
+      const response = await axios.put(`${API_BASE_URL}/userdetails/update/${formData.email}`, formData);
       if (response.status === 200) {
         alert('Details updated successfully');
         localStorage.setItem('user', JSON.stringify(response.data));

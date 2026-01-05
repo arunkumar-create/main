@@ -73,6 +73,7 @@ const Register = ({ onSelectChange },props) => {
       validateField(name, value);
     }
   };
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const checkEmailUniqueness = async (email) => {
     try {
       const response = await axios.get(`http://16.112.123.127:8080/userdetails/check-email/${email}`);
