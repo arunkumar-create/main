@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+
 const Login = (props) => {
   const [formData, setFormData] = useState({
     email: '',
@@ -57,11 +58,11 @@ const Login = (props) => {
     e.preventDefault();
     validateField('email', email);
     validateField('password', password);
-
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     if (email && password) {
       if (!errors.email && !errors.password) {
         try {
-          const response = await axios.post('http://16.112.123.127:8080/userdetails/login', { email, password });
+          const response = await axios.post('${API_BASE_URL}/userdetails/login', { email, password });
 
           if (response.status === 200) {
             localStorage.setItem('user', JSON.stringify(response.data));
@@ -91,7 +92,7 @@ const Login = (props) => {
       </div>
 
       <div className="containere">
-        <h2>Login v1</h2>
+        <h2>Login</h2>
         <form onSubmit={handleSubmit}>
           <div>
             <label>Email</label>
