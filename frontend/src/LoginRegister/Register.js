@@ -215,7 +215,7 @@ const Register = ({ onSelectChange },props) => {
           try {
             const response = await axios.post('http://16.112.123.127:8080/userdetails/save', formData);
             if (response.status === 200) {
-              alert('Form Submitted Successfully');
+              alert('Form Submitted Successfully1');
             } else {
               alert('There was a problem submitting the form. Please try again.');
             }
